@@ -1,0 +1,234 @@
+{
+  "1": {
+    "chosen": "random_forest",
+    "inverters": 22,
+    "rows": {
+      "train": 1838,
+      "calibration": 672,
+      "test": 671
+    },
+    "calibration_start": "2020-06-04",
+    "test_start": "2020-06-11",
+    "search": [
+      {
+        "family": "linear",
+        "params": {},
+        "calibration_mae": 408.89
+      },
+      {
+        "family": "random_forest",
+        "params": {
+          "min_samples_leaf": 3
+        },
+        "calibration_mae": 312.5
+      },
+      {
+        "family": "random_forest",
+        "params": {
+          "min_samples_leaf": 10
+        },
+        "calibration_mae": 328.15
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 500
+        },
+        "calibration_mae": 375.74
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 2000
+        },
+        "calibration_mae": 330.28
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 8000
+        },
+        "calibration_mae": 312.76
+      }
+    ],
+    "models": {
+      "linear": {
+        "params": {},
+        "calibration_mae": 408.89,
+        "test": {
+          "mae": 421.7,
+          "rmse": 674.85,
+          "r2": 0.9928,
+          "daylight_mae": 723.45
+        }
+      },
+      "random_forest": {
+        "params": {
+          "min_samples_leaf": 3
+        },
+        "calibration_mae": 312.5,
+        "test": {
+          "mae": 226.94,
+          "rmse": 473.33,
+          "r2": 0.9964,
+          "daylight_mae": 452.86
+        }
+      },
+      "svr": {
+        "params": {
+          "C": 8000
+        },
+        "calibration_mae": 312.76,
+        "test": {
+          "mae": 185.04,
+          "rmse": 408.08,
+          "r2": 0.9974,
+          "daylight_mae": 349.26
+        }
+      }
+    },
+    "baseline_hour_of_day_test": {
+      "mae": 1653.63,
+      "rmse": 3020.02,
+      "r2": 0.8552,
+      "daylight_mae": 3247.25
+    },
+    "ranges": {
+      "irradiation": [
+        0.0,
+        1.2216518466666668
+      ],
+      "module_temperature": [
+        18.140415466666663,
+        65.54571366666664
+      ],
+      "ambient_temperature": [
+        20.398504866666663,
+        35.25248613333334
+      ]
+    }
+  },
+  "2": {
+    "chosen": "svr",
+    "inverters": 22,
+    "rows": {
+      "train": 1912,
+      "calibration": 669,
+      "test": 669
+    },
+    "calibration_start": "2020-06-04",
+    "test_start": "2020-06-11",
+    "search": [
+      {
+        "family": "linear",
+        "params": {},
+        "calibration_mae": 624.6
+      },
+      {
+        "family": "random_forest",
+        "params": {
+          "min_samples_leaf": 3
+        },
+        "calibration_mae": 584.44
+      },
+      {
+        "family": "random_forest",
+        "params": {
+          "min_samples_leaf": 10
+        },
+        "calibration_mae": 557.69
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 500
+        },
+        "calibration_mae": 600.6
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 2000
+        },
+        "calibration_mae": 514.07
+      },
+      {
+        "family": "svr",
+        "params": {
+          "C": 8000
+        },
+        "calibration_mae": 504.17
+      }
+    ],
+    "models": {
+      "linear": {
+        "params": {},
+        "calibration_mae": 624.6,
+        "test": {
+          "mae": 572.16,
+          "rmse": 1551.91,
+          "r2": 0.947,
+          "daylight_mae": 1089.44
+        }
+      },
+      "random_forest": {
+        "params": {
+          "min_samples_leaf": 10
+        },
+        "calibration_mae": 557.69,
+        "test": {
+          "mae": 461.02,
+          "rmse": 1473.28,
+          "r2": 0.9522,
+          "daylight_mae": 915.19
+        }
+      },
+      "svr": {
+        "params": {
+          "C": 8000
+        },
+        "calibration_mae": 504.17,
+        "test": {
+          "mae": 351.13,
+          "rmse": 1555.24,
+          "r2": 0.9468,
+          "daylight_mae": 671.7
+        }
+      }
+    },
+    "baseline_hour_of_day_test": {
+      "mae": 2591.83,
+      "rmse": 4761.89,
+      "r2": 0.501,
+      "daylight_mae": 5085.29
+    },
+    "ranges": {
+      "irradiation": [
+        0.0,
+        1.0987660434482758
+      ],
+      "module_temperature": [
+        20.26512306896552,
+        66.6359527586207
+      ],
+      "ambient_temperature": [
+        20.942384766666667,
+        39.181637766666675
+      ]
+    }
+  },
+  "manifest": {
+    "model_sha256": "119a9a8ec0f15c22cf55905de2a7305e9fb0a31bf33f33298fffcc7ee9e63743",
+    "data_sha256": {
+      "Plant_1_Generation_Data.csv": "882f75f1c295946633617646cc92343ddb6fb821a2546c82f7e5cc737a13624e",
+      "Plant_1_Weather_Sensor_Data.csv": "91325041328745c288cb809aebd8b1b59cde54284500902ead1fb393499d6806",
+      "Plant_2_Generation_Data.csv": "9b735e9278774d4d1dd4601047315ef50b3793244d892446f6aabf4fae63bd37",
+      "Plant_2_Weather_Sensor_Data.csv": "cafd80885a51b88521b3301cffa4e4f013e2516fcb3478b439a81855edac3a64"
+    },
+    "created_utc": "2026-11-06T14:30:21+00:00",
+    "python": "3.14.2",
+    "sklearn": "1.9.1",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5"
+  }
+}

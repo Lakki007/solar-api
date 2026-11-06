@@ -1,0 +1,277 @@
+{
+ "info": {
+  "name": "Solar Expected Output API",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "variable": [
+  {
+   "key": "base_url",
+   "value": "http://localhost:8000"
+  },
+  {
+   "key": "api_key",
+   "value": ""
+  },
+  {
+   "key": "exp",
+   "value": ""
+  },
+  {
+   "key": "rec",
+   "value": ""
+  }
+ ],
+ "item": [
+  {
+   "name": "Health",
+   "request": {
+    "method": "GET",
+    "url": "{{base_url}}/health",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ]
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 200',()=>pm.response.to.have.status(200));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Model info",
+   "request": {
+    "method": "GET",
+    "url": "{{base_url}}/model-info",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ]
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 200',()=>pm.response.to.have.status(200));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Predict, known test row",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/predict",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"plant_id\": 2,\n  \"irradiation\": 0.4367032972413793,\n  \"module_temperature\": 34.252540413793106,\n  \"ambient_temperature\": 25.594030931034485,\n  \"timestamp\": \"2020-06-12T13:15:00\"\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 200',()=>pm.response.to.have.status(200));",
+       "pm.test('matches trained model',()=>pm.expect(pm.response.json().expected_ac_power).to.eql(14545.8));",
+       "const j=pm.response.json();pm.collectionVariables.set('exp',j.expected_ac_power);pm.collectionVariables.set('rec',j.receipt);"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Verify untouched receipt",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/verify",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"plant_id\": 2,\n  \"irradiation\": 0.4367032972413793,\n  \"module_temperature\": 34.252540413793106,\n  \"ambient_temperature\": 25.594030931034485,\n  \"timestamp\": \"2020-06-12T13:15:00\",\n  \"expected_ac_power\": {{exp}},\n  \"receipt\": \"{{rec}}\"\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 200',()=>pm.response.to.have.status(200));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Verify tampered value",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/verify",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"plant_id\": 2,\n  \"irradiation\": 0.4367032972413793,\n  \"module_temperature\": 34.252540413793106,\n  \"ambient_temperature\": 25.594030931034485,\n  \"timestamp\": \"2020-06-12T13:15:00\",\n  \"expected_ac_power\": 1.0,\n  \"receipt\": \"{{rec}}\"\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 409',()=>pm.response.to.have.status(409));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Batch",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/predict/batch",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"readings\": [\n    {\n      \"plant_id\": 2,\n      \"irradiation\": 0.4367032972413793,\n      \"module_temperature\": 34.252540413793106,\n      \"ambient_temperature\": 25.594030931034485,\n      \"timestamp\": \"2020-06-12T13:15:00\"\n    },\n    {\n      \"plant_id\": 2,\n      \"irradiation\": 0.3,\n      \"module_temperature\": 34.252540413793106,\n      \"ambient_temperature\": 25.594030931034485,\n      \"timestamp\": \"2020-06-12T13:15:00\"\n    }\n  ]\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 200',()=>pm.response.to.have.status(200));",
+       "pm.test('two results',()=>pm.expect(pm.response.json().results.length).to.eql(2));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Reject negative sunlight",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/predict",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"plant_id\": 2,\n  \"irradiation\": -1,\n  \"module_temperature\": 34.252540413793106,\n  \"ambient_temperature\": 25.594030931034485,\n  \"timestamp\": \"2020-06-12T13:15:00\"\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 422',()=>pm.response.to.have.status(422));"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Reject unknown plant",
+   "request": {
+    "method": "POST",
+    "url": "{{base_url}}/predict",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     },
+     {
+      "key": "x-api-key",
+      "value": "{{api_key}}"
+     }
+    ],
+    "body": {
+     "mode": "raw",
+     "raw": "{\n  \"plant_id\": 9,\n  \"irradiation\": 0.4367032972413793,\n  \"module_temperature\": 34.252540413793106,\n  \"ambient_temperature\": 25.594030931034485,\n  \"timestamp\": \"2020-06-12T13:15:00\"\n}"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status 422',()=>pm.response.to.have.status(422));"
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

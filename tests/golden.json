@@ -1,0 +1,106 @@
+[
+ {
+  "plant_id": 1,
+  "irradiation": 0.219947506,
+  "module_temperature": 30.364528333333336,
+  "ambient_temperature": 24.069722533333337,
+  "timestamp": "2020-06-11T08:45:00",
+  "expected_ac_power": 6828.28
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.50926205,
+  "module_temperature": 37.78594966666667,
+  "ambient_temperature": 25.262884466666662,
+  "timestamp": "2020-06-12T10:15:00",
+  "expected_ac_power": 15105.74
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.8554001073333332,
+  "module_temperature": 53.95309446666666,
+  "ambient_temperature": 29.45011986666667,
+  "timestamp": "2020-06-13T11:30:00",
+  "expected_ac_power": 24607.36
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.4920235971428571,
+  "module_temperature": 37.81592471428572,
+  "ambient_temperature": 25.218285714285713,
+  "timestamp": "2020-06-14T12:00:00",
+  "expected_ac_power": 15545.12
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.42740474,
+  "module_temperature": 45.503061933333335,
+  "ambient_temperature": 29.107385266666668,
+  "timestamp": "2020-06-15T13:15:00",
+  "expected_ac_power": 13155.0
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.3048436553333333,
+  "module_temperature": 38.78618573333333,
+  "ambient_temperature": 28.307661933333335,
+  "timestamp": "2020-06-16T14:15:00",
+  "expected_ac_power": 9521.32
+ },
+ {
+  "plant_id": 1,
+  "irradiation": 0.235077558,
+  "module_temperature": 28.996931866666667,
+  "ambient_temperature": 24.1127868,
+  "timestamp": "2020-06-17T16:15:00",
+  "expected_ac_power": 7143.42
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.2382026306666666,
+  "module_temperature": 28.614925066666665,
+  "ambient_temperature": 24.85178729999999,
+  "timestamp": "2020-06-11T08:45:00",
+  "expected_ac_power": 7743.86
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.4367032972413793,
+  "module_temperature": 34.252540413793106,
+  "ambient_temperature": 25.594030931034485,
+  "timestamp": "2020-06-12T13:15:00",
+  "expected_ac_power": 14545.8
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.3886319782758621,
+  "module_temperature": 43.494223724137925,
+  "ambient_temperature": 30.83672779310345,
+  "timestamp": "2020-06-13T14:45:00",
+  "expected_ac_power": 12436.38
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.6560674536666667,
+  "module_temperature": 44.24039810000001,
+  "ambient_temperature": 32.334951633333326,
+  "timestamp": "2020-06-14T14:45:00",
+  "expected_ac_power": 20678.39
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.2661915168965516,
+  "module_temperature": 33.94315637931035,
+  "ambient_temperature": 28.24675455172414,
+  "timestamp": "2020-06-15T16:45:00",
+  "expected_ac_power": 8899.76
+ },
+ {
+  "plant_id": 2,
+  "irradiation": 0.2107782023333333,
+  "module_temperature": 31.6446106,
+  "ambient_temperature": 26.31244396666667,
+  "timestamp": "2020-06-17T11:15:00",
+  "expected_ac_power": 7205.51
+ }
+]
