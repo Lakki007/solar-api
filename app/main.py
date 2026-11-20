@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from .config import settings
 from .schemas import Batch, Prediction, Reading, VerifyRequest
-from .service import ModelService
+from .service import RULES, RULES_VERSION, ModelService
 
 log = logging.getLogger("solar"); log.setLevel(logging.INFO)
 if not log.handlers:
@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     app.state.svc = ModelService()
     yield
 
-app = FastAPI(title="Solar Expected Output API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="Solar Expected Output API", version="1.1.0", lifespan=lifespan)
 if settings.cors_origins:
     app.add_middleware(CORSMiddleware, allow_origins=list(settings.cors_origins), allow_methods=["GET", "POST"], allow_headers=["*"])
 
@@ -52,21 +52,23 @@ def health(s=Depends(svc)): return {"status": "ok", "fingerprint": s.fingerprint
 def model_info(s=Depends(svc)):
     m = s.meta
     return {"fingerprint": s.fingerprint, "unit": "source AC units, plant total", "plants": {k: m[k] for k in ("1", "2")},
-            "manifest": m["manifest"], "note": "Estimate if inverters are running; not a forecast or fault diagnosis."}
+            "manifest": m["manifest"], "rules_version": RULES_VERSION, "rules": RULES,
+            "note": "Estimate if inverters are running; not a forecast or fault diagnosis."}
 
 @app.post("/predict", response_model=Prediction, dependencies=[Depends(auth)])
 def predict(r: Reading, s=Depends(svc)):
-    return s.present(r, s.estimate_many([r])[0])
+    v, ev = s.estimate_many([r])[0]
+    return s.present(r, v, ev)
 
 @app.post("/predict/batch", dependencies=[Depends(auth)])
 def predict_batch(b: Batch, s=Depends(svc)):
     if len(b.readings) > settings.max_batch:
         raise HTTPException(413, f"maximum {settings.max_batch} readings")
-    return {"results": [s.present(r, v) for r, v in zip(b.readings, s.estimate_many(b.readings))]}
+    return {"results": [s.present(r, v, ev) for r, (v, ev) in zip(b.readings, s.estimate_many(b.readings))]}
 
 @app.post("/verify", dependencies=[Depends(auth)])
 def verify(v: VerifyRequest, s=Depends(svc)):
-    r = Reading(**v.model_dump(include=set(Reading.model_fields)))
+    r = Reading(**v.model_dump(mode="json", include=set(Reading.model_fields)))
     ok, recomputed = s.verify(r, v.expected_ac_power, v.receipt)
     if not ok:
         raise HTTPException(409, {"verified": False, "recomputed_expected_ac_power": recomputed})

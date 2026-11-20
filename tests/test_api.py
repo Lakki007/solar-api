@@ -32,7 +32,7 @@ def test_more_sun_more_output(c):
 
 def test_dark_is_near_zero(c):
     x = c.post("/predict", json={**R, "irradiation": 0, "timestamp": "2020-06-07T01:00:00", "module_temperature": 22, "ambient_temperature": 24}).json()
-    assert x["expected_ac_power"] < 1000
+    assert x["expected_ac_power"] == 0 and x["regime"] == "dark"
 
 def test_verify_and_tamper(c):
     o = c.post("/predict", json=R).json(); a = {**R, "expected_ac_power": o["expected_ac_power"], "receipt": o["receipt"]}
@@ -49,5 +49,5 @@ def test_missing_field(c): assert c.post("/predict", json={"plant_id": 1}).statu
 def test_empty_batch(c): assert c.post("/predict/batch", json={"readings": []}).status_code == 422
 def test_range_warning(c):
     x = c.post("/predict", json={**R, "irradiation": 1.4}).json(); assert not x["within_training_range"] and x["warnings"]
-def test_night_sun_warning(c): assert c.post("/predict", json={**R, "timestamp": "2020-06-07T02:00:00"}).json()["warnings"]
+def test_night_sun_rejected(c): assert c.post("/predict", json={**R, "timestamp": "2020-06-07T02:00:00"}).status_code == 422
 def test_get_on_predict_405(c): assert c.get("/predict").status_code == 405
